@@ -1,7 +1,6 @@
 package miyu.smart.BackendMusica.entity;
 
 import jakarta.persistence.*;
-import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -32,12 +31,10 @@ public class Artista {
     @Column(name = "foto_url")
     private String foto_url;
 
-    @ManyToMany(mappedBy = "artista")
-    @ToString.Exclude
+    @ManyToMany(mappedBy = "artistas")
     private List<Cancion> canciones;
 
-    @ManyToMany(mappedBy = "artista")
-    @ToString.Exclude
+    @ManyToMany(mappedBy = "artistas")
     private List<Album> albums;
 
     public Artista(UUID id, String nombre_artista, int fecha_inicio, int fecha_fin, LocalDate nacimiento, String bibliografia, String foto_url, List<Cancion> canciones, List<Album> albums) {

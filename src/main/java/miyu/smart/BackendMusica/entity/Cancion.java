@@ -1,5 +1,6 @@
 package miyu.smart.BackendMusica.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -37,6 +38,7 @@ public class Cancion {
 
     @ManyToOne
     @JoinColumn(name = "album_id")
+    @JsonIgnore
     private Album album;
 
     public Cancion(UUID id, String nombre, int duracion_segundos, double calificacion, String descripcion, List<Artista> artistas, int fecha_salida, String portada_url, Album album) {
