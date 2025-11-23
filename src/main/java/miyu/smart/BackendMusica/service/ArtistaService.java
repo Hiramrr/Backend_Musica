@@ -36,8 +36,8 @@ public class ArtistaService{
         return null;
     }
 
-    public void eliminarArtista(Artista artista){
-        artistaRepository.delete(artista);
+    public void eliminarArtista(UUID id){
+        artistaRepository.deleteById(id);
     }
 
     public List<Artista> obtenerTodos(){

@@ -46,4 +46,11 @@ public class CancionService{
     public Optional<Cancion> obtenerCancionesPorArtista(UUID artistaId) {
         return cancionRepository.findByArtistasId(artistaId);
     }
+
+    public Cancion actializarCancion(Cancion cancion){
+        if(cancion.getId() != null && cancionRepository.existsById(cancion.getId())){
+            return cancionRepository.save(cancion);
+        }
+        return null;
+    }
 }

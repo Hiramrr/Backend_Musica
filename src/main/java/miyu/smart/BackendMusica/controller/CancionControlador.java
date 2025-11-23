@@ -1,5 +1,6 @@
 package miyu.smart.BackendMusica.controller;
 
+import miyu.smart.BackendMusica.entity.Artista;
 import miyu.smart.BackendMusica.entity.Cancion;
 import miyu.smart.BackendMusica.service.CancionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,8 @@ public class CancionControlador {
     @PostMapping
     public ResponseEntity<Cancion> saveCancion(@RequestBody Cancion cancion){
         try {
-            Cancion nueva_cancion = cancionService.guardar(cancion);
-            return ResponseEntity.created(new URI("/api/canciones/" + nueva_cancion.getId())).body(nueva_cancion);
+            Cancion nuevaCancion = cancionService.guardar(cancion);
+            return ResponseEntity.created(new URI("/api/canciones/" + nuevaCancion.getId())).body(nuevaCancion);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -45,13 +46,14 @@ public class CancionControlador {
         cancionDatosNuevos.setId(id);
 
         try {
-            Cancion cancionActualizada = cancionService.guardar(cancionDatosNuevos);
+            Cancion cancionActualizada = cancionService.actializarCancion(cancionDatosNuevos);
             return ResponseEntity.ok(cancionActualizada);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
+    @DeleteMapping
     public ResponseEntity<Void> deleteCancion(@PathVariable UUID id){
         Cancion cancionExistente = cancionService.obtenerCancion(id);
         if(cancionExistente != null){
@@ -71,5 +73,4 @@ public class CancionControlador {
 
         return ResponseEntity.ok(canciones);
     }
-
 }
