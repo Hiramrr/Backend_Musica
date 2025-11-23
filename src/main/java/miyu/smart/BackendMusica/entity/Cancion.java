@@ -27,7 +27,7 @@ public class Cancion {
     private double calificacion;
 
     @ManyToMany
-    @JoinTable(name = "cancion_artistas", joinColumns = @JoinColumn(name = "cancion_id"), inverseJoinColumns = @JoinColumn(name = "artista_id"))
+    @JoinTable(name = "cancion_artistas", joinColumns = @JoinColumn(name = "id_cancion"), inverseJoinColumns = @JoinColumn(name = "id_artista"))
     private List<Artista> artistas;
 
     @Column(name = "fecha_salida")
@@ -37,7 +37,7 @@ public class Cancion {
     private String portada_url;
 
     @ManyToOne
-    @JoinColumn(name = "album_id")
+    @JoinColumn(name = "id_album")
     @JsonIgnore
     private Album album;
 

@@ -1,7 +1,11 @@
 package miyu.smart.BackendMusica.service;
 
+import miyu.smart.BackendMusica.entity.Album;
 import miyu.smart.BackendMusica.entity.Artista;
+import miyu.smart.BackendMusica.entity.Cancion;
+import miyu.smart.BackendMusica.repository.AlbumRepository;
 import miyu.smart.BackendMusica.repository.ArtistaRepository;
+import miyu.smart.BackendMusica.repository.CancionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +18,12 @@ public class ArtistaService{
 
     @Autowired
     private ArtistaRepository artistaRepository;
+
+    @Autowired
+    private CancionRepository cancionRepository;
+
+    @Autowired
+    private AlbumRepository albumRepository;
 
     public Artista subirArtista(Artista artista){
         return artistaRepository.save(artista);
@@ -36,6 +46,18 @@ public class ArtistaService{
 
     public Artista obtenerArtista(UUID id){
         Optional<Artista> contenedor = artistaRepository.findById(id);
+
+        return contenedor.orElse(null);
+    }
+
+    public Cancion obtenerCanciones(UUID id){
+        Optional<Cancion> contenedor = cancionRepository.findByArtistasID(id);
+
+        return contenedor.orElse(null);
+    }
+
+    public Album obtenerAlbums(UUID id){
+        Optional<Album> contenedor = albumRepository.findByArtistasID(id);
 
         return contenedor.orElse(null);
     }

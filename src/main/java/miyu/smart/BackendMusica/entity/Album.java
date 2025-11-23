@@ -35,7 +35,7 @@ public class Album {
     private String portadaUrl;
 
     @ManyToMany
-    @JoinTable(name = "album_artistas", joinColumns = @JoinColumn(name = "album_id"), inverseJoinColumns = @JoinColumn(name = "artista_id"))
+    @JoinTable(name = "album_artistas", joinColumns = @JoinColumn(name = "id_album"), inverseJoinColumns = @JoinColumn(name = "id_artista"))
     private List<Artista> artistas;
 
     @OneToMany(mappedBy = "album")
