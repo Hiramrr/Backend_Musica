@@ -16,7 +16,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/artista")
+@RequestMapping("/api/artistas")
 public class ArtistaControlador {
 
     @Autowired

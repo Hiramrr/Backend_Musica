@@ -1,6 +1,7 @@
 package miyu.smart.BackendMusica.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class Cancion {
 
     @ManyToOne
     @JoinColumn(name = "id_album")
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Album album;
 
     public Cancion(UUID id, String nombre, int duracion_segundos, double calificacion, String descripcion, List<Artista> artistas, int fecha_salida, String portada_url, Album album) {
@@ -122,13 +123,16 @@ public class Cancion {
         this.portada_url = portada_url;
     }
 
-    public UUID getIdAlbum() {
-        return (album != null) ? album.getId() : null;
+    public Album getAlbum() {
+        return album;
     }
 
     public void setAlbum(Album album) {
         this.album = album;
     }
 
+    public UUID getIdAlbum() {
+        return (album != null) ? album.getId() : null;
+    }
 
 }

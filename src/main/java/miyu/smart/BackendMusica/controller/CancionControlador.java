@@ -1,6 +1,5 @@
 package miyu.smart.BackendMusica.controller;
 
-import miyu.smart.BackendMusica.entity.Artista;
 import miyu.smart.BackendMusica.entity.Cancion;
 import miyu.smart.BackendMusica.service.CancionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +52,7 @@ public class CancionControlador {
         }
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCancion(@PathVariable UUID id){
         Cancion cancionExistente = cancionService.obtenerCancion(id);
         if(cancionExistente != null){

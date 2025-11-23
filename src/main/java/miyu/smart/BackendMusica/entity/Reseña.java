@@ -1,6 +1,7 @@
 package miyu.smart.BackendMusica.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -27,17 +28,17 @@ public class Reseña {
 
     @ManyToOne
     @JoinColumn(name = "id_usuario", nullable = false)
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Usuario usuario;
 
     @ManyToOne
     @JoinColumn(name = "id_album", nullable = true)
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Album album;
 
     @ManyToOne
     @JoinColumn(name = "id_cancion", nullable = true)
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Cancion cancion;
 
     public Reseña(UUID id, String contenido, Double calificacion, LocalDate fechaCreacion, Album album, Usuario usuario, Cancion cancion) {
