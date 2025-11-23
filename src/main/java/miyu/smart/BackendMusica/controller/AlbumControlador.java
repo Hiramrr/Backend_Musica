@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -43,5 +44,31 @@ public class AlbumControlador {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Album> updateAlbum(@PathVariable UUID id, Album album){
+        Album albumExistente = albumService.obtenerAlbum(id);
+
+        if(albumExistente == null){
+            return ResponseEntity.notFound().build();
+        }
+        try {
+            Album albumActualizado = albumService.actualizarAlbum(albumExistente);
+            return ResponseEntity.ok(albumExistente);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+    @GetMapping("/artista/{id}")
+    public ResponseEntity<Optional<Album>> getAlbumsByArtista(@PathVariable UUID id) {
+        Optional<Album> albums = albumService.obtenerCancionesPorArtista(id);
+
+        if (canciones.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(canciones);
     }
 }

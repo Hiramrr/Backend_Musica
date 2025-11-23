@@ -12,5 +12,4 @@ import java.util.UUID;
 @Repository
 public interface AlbumRepository extends JpaRepository<Album, UUID> {
     Optional<Album> findByArtistasId(UUID artistaID);
-
 }

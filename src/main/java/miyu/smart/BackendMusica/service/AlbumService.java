@@ -2,6 +2,7 @@ package miyu.smart.BackendMusica.service;
 
 import miyu.smart.BackendMusica.entity.Album;
 import miyu.smart.BackendMusica.entity.Artista;
+import miyu.smart.BackendMusica.entity.Cancion;
 import miyu.smart.BackendMusica.repository.AlbumRepository;
 import miyu.smart.BackendMusica.repository.ArtistaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,5 +42,16 @@ public class AlbumService {
 
     public List<Artista> obtenerArtistasDeAlbum(UUID id) {
         return artistaRepository.findByAlbumsId(id);
+    }
+
+    public Optional<Album> obtenerAlbumPorArtista(UUID artistaId) {
+        return albumRepository.findByArtistasId(artistaId);
+    }
+
+    public Album actualizarAlbum(Album album){
+        if(album.getId() != null && albumRepository.existsById(album.getId())){
+            return albumRepository.save(album);
+        }
+        return null;
     }
 }
