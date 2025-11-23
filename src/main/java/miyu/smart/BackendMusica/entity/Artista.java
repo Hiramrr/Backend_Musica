@@ -1,8 +1,10 @@
 package miyu.smart.BackendMusica.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,32 +16,37 @@ public class Artista {
     private UUID id;
 
     @Column(name="nombre", nullable = false)
-    private String nombre_artista;
+    private String nombre;
 
     @Column(name = "fecha_inicio", nullable = false)
-    private int fecha_inicio; //las fechas son en año como por ejemplo 2005 para que sea mas facil jaja
+    private Integer fecha_inicio; //las fechas son en año como por ejemplo 2005 para que sea mas facil jaja
 
     @Column(name = "fecha_fin") // si es null es porque sigue activo
-    private int fecha_fin;
+    private Integer fecha_fin;
 
     @Column(name = "nacimiento")
     private LocalDate nacimiento;
 
-    @Column(name = "bibibliografia", columnDefinition = "TEXT")
+    @Column(name = "bibliografia", columnDefinition = "TEXT")
     private String bibliografia;
 
     @Column(name = "foto_url")
     private String foto_url;
 
     @ManyToMany(mappedBy = "artistas")
-    private List<Cancion> canciones;
+    @JsonIgnore // Este jsoningnore evita bucless
+    private List<Cancion> canciones = new ArrayList<>();
 
     @ManyToMany(mappedBy = "artistas")
-    private List<Album> albums;
+    @JsonIgnore
+    private List<Album> albums = new ArrayList<>();
 
-    public Artista(UUID id, String nombre_artista, int fecha_inicio, int fecha_fin, LocalDate nacimiento, String bibliografia, String foto_url, List<Cancion> canciones, List<Album> albums) {
+    public Artista() {
+    }
+
+    public Artista(UUID id, String nombre, Integer fecha_inicio, Integer fecha_fin, LocalDate nacimiento, String bibliografia, String foto_url, List<Cancion> canciones, List<Album> albums) {
         this.id = id;
-        this.nombre_artista = nombre_artista;
+        this.nombre = nombre;
         this.fecha_inicio = fecha_inicio;
         this.fecha_fin = fecha_fin;
         this.nacimiento = nacimiento;
@@ -47,10 +54,6 @@ public class Artista {
         this.foto_url = foto_url;
         this.canciones = canciones;
         this.albums = albums;
-    }
-
-    public Artista() {
-
     }
 
     public UUID getId() {
@@ -61,27 +64,27 @@ public class Artista {
         this.id = id;
     }
 
-    public String getNombre_artista() {
-        return nombre_artista;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setNombre_artista(String nombre_artista) {
-        this.nombre_artista = nombre_artista;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    public int getFecha_inicio() {
+    public Integer getFecha_inicio() {
         return fecha_inicio;
     }
 
-    public void setFecha_inicio(int fecha_inicio) {
+    public void setFecha_inicio(Integer fecha_inicio) {
         this.fecha_inicio = fecha_inicio;
     }
 
-    public int getFecha_fin() {
+    public Integer getFecha_fin() {
         return fecha_fin;
     }
 
-    public void setFecha_fin(int fecha_fin) {
+    public void setFecha_fin(Integer fecha_fin) {
         this.fecha_fin = fecha_fin;
     }
 

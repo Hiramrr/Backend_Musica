@@ -1,6 +1,9 @@
 package miyu.smart.BackendMusica.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -10,7 +13,7 @@ public class Reseña {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "resena_id")
+    @Column(name = "id")
     private UUID id;
 
     @Column(name="contenido",columnDefinition = "TEXT", nullable = false)
@@ -20,21 +23,24 @@ public class Reseña {
     private Double calificacion;
 
     @Column(name = "fecha_creacion")
-    private LocalDateTime fechaCreacion = LocalDateTime.now();
+    private LocalDate fechaCreacion = LocalDate.now();
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
+    @JoinColumn(name = "id_usuario", nullable = false)
+    @JsonIgnore
     private Usuario usuario;
 
     @ManyToOne
-    @JoinColumn(name = "album_id", nullable = true)
+    @JoinColumn(name = "id_album", nullable = true)
+    @JsonIgnore
     private Album album;
 
     @ManyToOne
-    @JoinColumn(name = "cancion_id", nullable = true)
+    @JoinColumn(name = "id_cancion", nullable = true)
+    @JsonIgnore
     private Cancion cancion;
 
-    public Reseña(UUID id, String contenido, Double calificacion, LocalDateTime fechaCreacion, Album album, Usuario usuario, Cancion cancion) {
+    public Reseña(UUID id, String contenido, Double calificacion, LocalDate fechaCreacion, Album album, Usuario usuario, Cancion cancion) {
         this.id = id;
         this.contenido = contenido;
         this.calificacion = calificacion;
@@ -72,11 +78,11 @@ public class Reseña {
         this.calificacion = calificacion;
     }
 
-    public LocalDateTime getFechaCreacion() {
+    public LocalDate getFechaCreacion() {
         return fechaCreacion;
     }
 
-    public void setFechaCreacion(LocalDateTime fechaCreacion) {
+    public void setFechaCreacion(LocalDate fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
     }
 

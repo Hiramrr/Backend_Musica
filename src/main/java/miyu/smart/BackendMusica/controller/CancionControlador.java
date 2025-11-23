@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/canciones")
@@ -28,6 +29,24 @@ public class CancionControlador {
             Cancion nueva_cancion = cancionService.guardar(cancion);
             return ResponseEntity.created(new URI("/api/canciones/" + nueva_cancion.getId())).body(nueva_cancion);
         }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Cancion> updateCancion(@PathVariable UUID id, @RequestBody Cancion cancionDatosNuevos){
+        Cancion cancionExistente = cancionService.obtenerCancion(id);
+
+        if (cancionExistente == null){
+            return ResponseEntity.notFound().build();
+        }
+
+        cancionDatosNuevos.setId(id);
+
+        try {
+            Cancion cancionActualizada = cancionService.guardar(cancionDatosNuevos);
+            return ResponseEntity.ok(cancionActualizada);
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }

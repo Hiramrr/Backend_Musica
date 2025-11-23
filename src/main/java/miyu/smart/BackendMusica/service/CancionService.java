@@ -29,7 +29,7 @@ public class CancionService{
         return cancionRepository.findAll();
     }
 
-    public Cancion obtenerCanciones(UUID id){
+    public Cancion obtenerCancion(UUID id){
         Optional<Cancion> contenedor = cancionRepository.findById(id);
 
         return contenedor.orElse(null);

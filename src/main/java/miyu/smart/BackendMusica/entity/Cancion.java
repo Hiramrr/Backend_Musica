@@ -3,6 +3,7 @@ package miyu.smart.BackendMusica.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,7 +29,7 @@ public class Cancion {
 
     @ManyToMany
     @JoinTable(name = "cancion_artistas", joinColumns = @JoinColumn(name = "id_cancion"), inverseJoinColumns = @JoinColumn(name = "id_artista"))
-    private List<Artista> artistas;
+    private List<Artista> artistas = new ArrayList<>() ;
 
     @Column(name = "fecha_salida")
     private int fecha_salida;   //aqui solo guardariamos el año como 2005, la fecha se la pondremos en la descripcion, es opcional jaja
@@ -121,8 +122,8 @@ public class Cancion {
         this.portada_url = portada_url;
     }
 
-    public Album getAlbum() {
-        return album;
+    public UUID getIdAlbum() {
+        return (album != null) ? album.getId() : null;
     }
 
     public void setAlbum(Album album) {

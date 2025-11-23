@@ -3,6 +3,7 @@ package miyu.smart.BackendMusica.entity;
 import jakarta.persistence.*;
 
 import java.beans.ConstructorProperties;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,10 +37,10 @@ public class Album {
 
     @ManyToMany
     @JoinTable(name = "album_artistas", joinColumns = @JoinColumn(name = "id_album"), inverseJoinColumns = @JoinColumn(name = "id_artista"))
-    private List<Artista> artistas;
+    private List<Artista> artistas = new ArrayList<>();
 
-    @OneToMany(mappedBy = "album")
-    private List<Cancion> canciones;
+    @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Cancion> canciones = new ArrayList<>();
 
     public Album(UUID id, String nombre, int duracion_segundos, String descripcion, Double calificacion, int totalCanciones, String portadaUrl, int fechaSalida, List<Artista> artistas, List<Cancion> canciones) {
         this.id = id;
