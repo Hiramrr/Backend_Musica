@@ -63,12 +63,12 @@ public class AlbumControlador {
 
     @GetMapping("/artista/{id}")
     public ResponseEntity<Optional<Album>> getAlbumsByArtista(@PathVariable UUID id) {
-        Optional<Album> albums = albumService.obtenerCancionesPorArtista(id);
+        Optional<Album> albums = albumService.obtenerAlbumPorArtista(id);
 
-        if (canciones.isEmpty()) {
+        if (albums.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
 
-        return ResponseEntity.ok(canciones);
+        return ResponseEntity.ok(albums);
     }
 }
