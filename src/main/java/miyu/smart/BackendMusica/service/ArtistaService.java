@@ -51,13 +51,13 @@ public class ArtistaService{
     }
 
     public Cancion obtenerCanciones(UUID id){
-        Optional<Cancion> contenedor = cancionRepository.findByArtistasID(id);
+        Optional<Cancion> contenedor = cancionRepository.findByArtistasId(id);
 
         return contenedor.orElse(null);
     }
 
     public Album obtenerAlbums(UUID id){
-        Optional<Album> contenedor = albumRepository.findByArtistasID(id);
+        Optional<Album> contenedor = albumRepository.findByArtistasId(id);
 
         return contenedor.orElse(null);
     }
