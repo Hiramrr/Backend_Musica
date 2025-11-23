@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -50,4 +51,25 @@ public class CancionControlador {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+
+    public ResponseEntity<Void> deleteCancion(@PathVariable UUID id){
+        Cancion cancionExistente = cancionService.obtenerCancion(id);
+        if(cancionExistente != null){
+            cancionService.eliminar(cancionExistente.getId());
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @GetMapping("/artista/{id}")
+    public ResponseEntity<Optional<Cancion>> getCancionesByArtista(@PathVariable UUID id) {
+        Optional<Cancion> canciones = cancionService.obtenerCancionesPorArtista(id);
+
+        if (canciones.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(canciones);
+    }
+
 }

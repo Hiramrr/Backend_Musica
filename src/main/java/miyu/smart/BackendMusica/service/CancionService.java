@@ -42,4 +42,8 @@ public class CancionService{
     public List<Artista> obtenerArtistasDeCancion(UUID id) {
         return artistaRepository.findByCancionesId(id);
     }
+
+    public Optional<Cancion> obtenerCancionesPorArtista(UUID artistaId) {
+        return cancionRepository.findByArtistasId(artistaId);
+    }
 }
