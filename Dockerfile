@@ -6,4 +6,4 @@ COPY src ./src
 
 RUN mvn package -DskipTests
 
-CMD ["java", "-jar", "target/Back-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "target/BackendMusica-0.0.1-SNAPSHOT.jar"]
