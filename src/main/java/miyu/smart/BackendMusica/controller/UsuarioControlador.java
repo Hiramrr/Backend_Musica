@@ -1,4 +1,22 @@
 package miyu.smart.BackendMusica.controller;
 
+import miyu.smart.BackendMusica.entity.Usuario;
+import miyu.smart.BackendMusica.service.UsuarioService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/usuarios")
+@CrossOrigin(origins = "http://localhost:5173")
 public class UsuarioControlador {
+
+    @Autowired
+    private UsuarioService usuarioService;
+
+    @PostMapping("/registro")
+    public ResponseEntity<Usuario> registrarUsuario(@RequestBody Usuario usuario) {
+        Usuario nuevoUsuario = usuarioService.guardarUsuario(usuario);
+        return ResponseEntity.ok(nuevoUsuario);
+    }
 }
