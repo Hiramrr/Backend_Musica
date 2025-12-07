@@ -1,5 +1,6 @@
 package miyu.smart.BackendMusica.controller;
 
+import miyu.smart.BackendMusica.dto.CancionResumen;
 import miyu.smart.BackendMusica.entity.Cancion;
 import miyu.smart.BackendMusica.service.CancionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,8 @@ public class CancionControlador {
     private CancionService cancionService;
 
     @GetMapping
-    public ResponseEntity<List<Cancion>> getAllCanciones(){
-        return ResponseEntity.ok(cancionService.obtenerTodos());
+        public ResponseEntity<List<CancionResumen>> getAllCanciones(){
+            return ResponseEntity.ok(cancionService.obtenerTodosPersonalizados());
     }
 
     @PostMapping

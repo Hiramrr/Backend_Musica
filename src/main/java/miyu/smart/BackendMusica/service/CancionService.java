@@ -1,5 +1,6 @@
 package miyu.smart.BackendMusica.service;
 
+import miyu.smart.BackendMusica.dto.CancionResumen;
 import miyu.smart.BackendMusica.entity.Artista;
 import miyu.smart.BackendMusica.entity.Cancion;
 import miyu.smart.BackendMusica.repository.ArtistaRepository;
@@ -52,5 +53,10 @@ public class CancionService{
             return cancionRepository.save(cancion);
         }
         return null;
+    }
+
+    //Metodo para obtener canciones con datos filtrados
+    public List<CancionResumen> obtenerTodosPersonalizados() {
+        return cancionRepository.obtenerResumenesNativos();
     }
 }
