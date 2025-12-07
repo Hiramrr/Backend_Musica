@@ -1,5 +1,6 @@
 package miyu.smart.BackendMusica.service;
 
+import miyu.smart.BackendMusica.dto.AlbumResumen;
 import miyu.smart.BackendMusica.entity.Album;
 import miyu.smart.BackendMusica.entity.Artista;
 import miyu.smart.BackendMusica.entity.Cancion;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class AlbumService {
@@ -53,5 +55,9 @@ public class AlbumService {
             return albumRepository.save(album);
         }
         return null;
+    }
+
+    public List<AlbumResumen> obtenerTodosPersonalizados() {
+        return albumRepository.obtenerResumenesNativos();
     }
 }
