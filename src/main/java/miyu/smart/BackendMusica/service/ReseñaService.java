@@ -35,4 +35,8 @@ public class ReseñaService {
     public void eliminar(UUID id) {
         reseñaRepository.deleteById(id);
     }
+
+    public List<Reseña> obtenerPorAlbum(UUID albumId) {
+        return reseñaRepository.findByAlbumId(albumId);
+    }
 }

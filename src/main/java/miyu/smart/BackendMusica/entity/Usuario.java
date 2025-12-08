@@ -1,5 +1,7 @@
 package miyu.smart.BackendMusica.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty; 
+
 import jakarta.persistence.*;
 
 import java.util.UUID;
@@ -22,6 +24,7 @@ public class Usuario {
     private String fotoUrl;
 
     @Column(name= "password", nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     public Usuario() {
