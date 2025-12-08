@@ -44,12 +44,9 @@ public class ReseñaControlador {
     @PostMapping
     public ResponseEntity<Reseña> crearReseña(@RequestBody Reseña reseña) {
         try {
-            // Nota: El JSON debe incluir el objeto 'usuario' con su ID, 
-            // y O BIEN 'cancion' con ID O BIEN 'album' con ID (no ambos).
             Reseña nuevaReseña = reseñaService.guardar(reseña);
             return ResponseEntity.created(new URI("/api/resenas/" + nuevaReseña.getId())).body(nuevaReseña);
         } catch (Exception e) {
-            // Esto capturará errores como violar el constraint de la BD (enviar album y cancion a la vez)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
