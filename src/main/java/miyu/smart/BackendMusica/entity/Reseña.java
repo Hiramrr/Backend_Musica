@@ -28,7 +28,7 @@ public class Reseña {
 
     @ManyToOne
     @JoinColumn(name = "id_usuario", nullable = false)
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Usuario usuario;
 
     @ManyToOne

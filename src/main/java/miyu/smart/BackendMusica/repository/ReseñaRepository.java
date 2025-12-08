@@ -10,4 +10,6 @@ import java.util.UUID;
 @Repository
 public interface ReseñaRepository extends JpaRepository<Reseña, UUID> {
     List<Reseña> findByCancionId(UUID cancionId);
+    
+    List<Reseña> findByAlbumId(UUID albumId);
 }
