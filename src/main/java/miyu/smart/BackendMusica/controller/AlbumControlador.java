@@ -1,6 +1,5 @@
 package miyu.smart.BackendMusica.controller;
-
-
+import miyu.smart.BackendMusica.dto.AlbumResumen;
 import miyu.smart.BackendMusica.entity.Album;
 import miyu.smart.BackendMusica.entity.Cancion;
 import miyu.smart.BackendMusica.service.AlbumService;
@@ -22,10 +21,10 @@ public class AlbumControlador {
     private AlbumService albumService;
 
     @GetMapping
-    public ResponseEntity<List<Album>> getAllAlbums(){
-        return ResponseEntity.ok(albumService.obtenerTodos());
+    public ResponseEntity<List<AlbumResumen>> getAllAlbums(){
+        return ResponseEntity.ok(albumService.obtenerTodosPersonalizados()); // Usamos el método que devuelve una respuesta con solo datos necesarios
     }
-
+    
     @PostMapping
     public ResponseEntity<Album> saveAlbum(@RequestBody Album album){
         try{
