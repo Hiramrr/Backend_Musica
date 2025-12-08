@@ -55,7 +55,7 @@ public class ArtistaControlador {
         }
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteArtista(@PathVariable UUID id){
         Artista artistaExistente = artistaService.obtenerArtista(id);
         if(artistaExistente != null){
