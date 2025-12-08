@@ -49,4 +49,16 @@ public class UsuarioService {
         }
         return null;
     }
+
+    public Usuario autenticar(String correo, String password) {
+        Optional<Usuario> contenedor = usuarioRepository.findByCorreo(correo);
+
+        if (contenedor.isPresent()) {
+            Usuario usuario = contenedor.get();
+            if (codificadorContraseña.matches(password, usuario.getPassword())) {
+                return usuario;
+            }
+        }
+        return null;
+    }
 }

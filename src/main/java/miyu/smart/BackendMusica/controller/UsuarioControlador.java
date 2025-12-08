@@ -19,4 +19,18 @@ public class UsuarioControlador {
         Usuario nuevoUsuario = usuarioService.guardarUsuario(usuario);
         return ResponseEntity.ok(nuevoUsuario);
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody Map<String, String> credenciales) {
+        String correo = credenciales.get("correo");
+        String password = credenciales.get("password");
+
+        Usuario usuario = usuarioService.autenticar(correo, password);
+
+        if (usuario != null) {
+            return ResponseEntity.ok(usuario);
+        } else {
+            return ResponseEntity.status(401).body("Credenciales incorrectas");
+        }
+    }
 }
