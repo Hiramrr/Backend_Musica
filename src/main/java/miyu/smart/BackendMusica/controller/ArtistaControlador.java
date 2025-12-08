@@ -38,7 +38,7 @@ public class ArtistaControlador {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Artista> updateArtista(@PathVariable UUID id, Artista artistaDatosNuevos){
+    public ResponseEntity<Artista> updateArtista(@PathVariable UUID id, @RequestBody Artista artistaDatosNuevos){
         Artista artistaExistente = artistaService.obtenerArtista(id);
 
         if (artistaExistente == null){
