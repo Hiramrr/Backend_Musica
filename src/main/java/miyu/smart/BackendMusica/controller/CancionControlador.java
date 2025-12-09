@@ -73,4 +73,16 @@ public class CancionControlador {
 
         return ResponseEntity.ok(canciones);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Cancion> getCancionPorId(@PathVariable UUID id) {
+        Cancion cancion = cancionService.obtenerCancion(id);
+        
+        if (cancion != null) {
+            return ResponseEntity.ok(cancion);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+
 }

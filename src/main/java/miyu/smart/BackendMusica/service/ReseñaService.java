@@ -20,6 +20,14 @@ public class ReseñaService {
     private ReseñaRepository reseñaRepository;
 
     public Reseña guardar(Reseña reseña) {
+        //No pueden venir ambos nulos ni ambos llenos
+        if (reseña.getCancion() == null && reseña.getAlbum() == null) {
+            throw new IllegalArgumentException("La reseña debe pertenecer a una Canción o a un Álbum.");
+        }
+        if (reseña.getCancion() != null && reseña.getAlbum() != null) {
+            throw new IllegalArgumentException("No se puede reseñar una Canción y un Álbum al mismo tiempo.");
+        }
+
         return reseñaRepository.save(reseña);
     }
 

@@ -1,9 +1,12 @@
 package miyu.smart.BackendMusica.dto;
 
+import java.util.UUID;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public interface CancionResumen {
     // Datos directos de la tabla cancion
+    UUID getId();
     String getNombre();
     String getDescripcion();
     @JsonProperty("duracion_segundos")
