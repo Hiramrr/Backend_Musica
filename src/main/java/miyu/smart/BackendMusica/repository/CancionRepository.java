@@ -16,6 +16,7 @@ public interface CancionRepository extends JpaRepository<Cancion, UUID> {
     Optional<Cancion> findByArtistasId(UUID artistaID);
     @Query(value = """
         SELECT 
+            c.id AS id,
             c.nombre AS nombre, 
             c.descripcion AS descripcion,
             c.duracion_segundos AS duracionSegundos,
