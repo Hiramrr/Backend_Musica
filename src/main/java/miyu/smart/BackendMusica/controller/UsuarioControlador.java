@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/usuarios")
@@ -40,6 +41,16 @@ public class UsuarioControlador {
             return ResponseEntity.ok(usuario);
         } else {
             return ResponseEntity.status(401).body("Credenciales incorrectas");
+        }
+    }
+
+    @PutMapping("/actualizar/{id}")
+    public ResponseEntity<?> actualizarPerfil(@PathVariable UUID id, @RequestBody Usuario usuarioDatos) {
+        try {
+            Usuario usuarioActualizado = usuarioService.actualizarDatosPerfil(id, usuarioDatos);
+            return ResponseEntity.ok(usuarioActualizado);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(404).body("Error: " + e.getMessage());
         }
     }
 }
