@@ -1,13 +1,17 @@
 package miyu.smart.BackendMusica.service;
 
+import miyu.smart.BackendMusica.dto.ReseñaDTO;
 import miyu.smart.BackendMusica.entity.Reseña;
+import miyu.smart.BackendMusica.entity.Usuario;
 import miyu.smart.BackendMusica.repository.ReseñaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ReseñaService {
@@ -29,7 +33,7 @@ public class ReseñaService {
 
 
     public List<Reseña> obtenerPorCancion(UUID cancionId) {
-        return reseñaRepository.findByCancionId(cancionId);
+        return reseñaRepository.findByCancion_Id(cancionId);
     }
 
     public void eliminar(UUID id) {
@@ -37,6 +41,49 @@ public class ReseñaService {
     }
 
     public List<Reseña> obtenerPorAlbum(UUID albumId) {
-        return reseñaRepository.findByAlbumId(albumId);
+        return reseñaRepository.findByAlbum_Id(albumId);
+    }
+
+    @Transactional(readOnly = true)
+    //@Transactional le dice a los metodos que no cierre la conexion de la base de datos hasta que termine todo el metodo
+    //de lo contrario por defalt cierra la conexion al terminar la primera consulta
+    //lo dejamos en solo lectura porque no vamos a modificar nada en la base de datos
+    public List<ReseñaDTO> obtenerReseñasDeAlbum(UUID albumId, UUID usuarioVisitanteId) { 
+        // Nota el guion bajo aquí también
+        List<Reseña> reseñas = reseñaRepository.findByAlbum_Id(albumId); 
+        return convertirLista(reseñas, usuarioVisitanteId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ReseñaDTO> obtenerReseñasDeCancion(UUID cancionId, UUID usuarioVisitanteId) {
+        // Nota el guion bajo aquí también
+        List<Reseña> reseñas = reseñaRepository.findByCancion_Id(cancionId);
+        return convertirLista(reseñas, usuarioVisitanteId);
+    }
+    // Recibe cualquier lista de reseñas y el id del usuario para agregar una bandera si la reseña es suya
+    private List<ReseñaDTO> convertirLista(List<Reseña> reseñas, UUID usuarioVisitanteId) {
+        return reseñas.stream()
+                .map(reseña -> {
+                    Usuario autor = reseña.getUsuario();
+                    
+                    // Verificamos si el visitante es el dueño de la reseña
+                    boolean esMia = usuarioVisitanteId != null && usuarioVisitanteId.equals(autor.getId());
+
+                    ReseñaDTO.AutorDTO autorDTO = new ReseñaDTO.AutorDTO(
+                            autor.getId(),
+                            autor.getNombre(),
+                            autor.getFotoUrl()
+                    );
+
+                    return new ReseñaDTO(
+                            reseña.getId(),
+                            reseña.getContenido(),
+                            reseña.getCalificacion(),
+                            reseña.getFechaCreacion(),
+                            esMia,
+                            autorDTO
+                    );
+                })
+                .collect(Collectors.toList());
     }
 }

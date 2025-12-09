@@ -9,7 +9,8 @@ import java.util.UUID;
 
 @Repository
 public interface ReseñaRepository extends JpaRepository<Reseña, UUID> {
-    List<Reseña> findByCancionId(UUID cancionId);
-    
-    List<Reseña> findByAlbumId(UUID albumId);
+    // Spring entiende: "Busca por la propiedad 'cancion', y dentro de ella por 'id'"
+    List<Reseña> findByCancion_Id(UUID cancionId);
+    // Spring entiende: "Busca por la propiedad 'album', y dentro de ella por 'id'"
+    List<Reseña> findByAlbum_Id(UUID albumId);
 }
