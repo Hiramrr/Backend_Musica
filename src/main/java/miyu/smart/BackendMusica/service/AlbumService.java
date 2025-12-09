@@ -52,6 +52,10 @@ public class AlbumService {
         return albumRepository.findByArtistasId(artistaId);
     }
 
+    public List<Album> obtenerPorArtista(UUID artistaId) {
+        return albumRepository.findByArtistas_Id(artistaId);
+    }
+
     public Album actualizarAlbum(Album album){
         if(album.getId() != null && albumRepository.existsById(album.getId())){
             return albumRepository.save(album);
@@ -106,6 +110,6 @@ public class AlbumService {
         int segundos = totalSegundos % 60;
         return String.format("%d:%02d", minutos, segundos);
     }
-
+    
 
 }

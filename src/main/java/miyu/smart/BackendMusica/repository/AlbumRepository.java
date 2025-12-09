@@ -34,4 +34,6 @@ public interface AlbumRepository extends JpaRepository<Album, UUID> {
            "LEFT JOIN FETCH a.artistas " + 
            "WHERE a.id = :id")
     Optional<Album> buscarPorIdConDetalles(@Param("id") UUID id);
+
+    List<Album> findByArtistas_Id(UUID artistaId);
 }
