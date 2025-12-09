@@ -92,7 +92,6 @@ public class AlbumControlador {
 
         return ResponseEntity.ok(albums);
     }
-<<<<<<< Updated upstream
 
     @GetMapping("/{id}") //Este enpoint devuelve los detalles del album con el ID que coincida con la lista de sus canciones
     public ResponseEntity<AlbumDetalleDTO> getAlbumDetalle(@PathVariable UUID id) {
@@ -105,6 +104,3 @@ public class AlbumControlador {
         return ResponseEntity.ok(album);
     }
 }
-=======
-}
->>>>>>> Stashed changes

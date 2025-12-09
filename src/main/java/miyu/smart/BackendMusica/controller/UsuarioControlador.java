@@ -63,4 +63,15 @@ public class UsuarioControlador {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+
+    @DeleteMapping("/usuarios/{id}")
+    public ResponseEntity<?> eliminarCuenta(@PathVariable UUID id) {
+
+        if (usuarioService.obtenerUsuario(id) != null) {
+            usuarioService.borrarPorID(id);
+            return ResponseEntity.ok().body("se elimino");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

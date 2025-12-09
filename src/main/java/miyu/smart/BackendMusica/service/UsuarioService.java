@@ -63,4 +63,8 @@ public class UsuarioService {
         }
         return null;
     }
+
+    public void borrarPorID(UUID id) {
+        usuarioRepository.deleteById(id);
+    }
 }
