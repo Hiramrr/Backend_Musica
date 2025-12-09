@@ -64,7 +64,7 @@ public class UsuarioControlador {
         }
     }
 
-    @DeleteMapping("/usuarios/{id}")
+    @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<?> eliminarCuenta(@PathVariable UUID id) {
 
         if (usuarioService.obtenerUsuario(id) != null) {
