@@ -86,4 +86,28 @@ public class ReseñaService {
                 })
                 .collect(Collectors.toList());
     }
+
+    public Reseña editar(UUID reseñaId, Reseña datosNuevos, UUID usuarioId) {
+        Reseña reseñaExistente = reseñaRepository.findById(reseñaId)
+                .orElse(null);
+
+        if (reseñaExistente == null) {
+            throw new IllegalArgumentException("La reseña no existe");
+        }
+
+        //Verificamos que el usuario que intenta editar sea el dueño
+        if (!reseñaExistente.getUsuario().getId().equals(usuarioId)) {
+            throw new SecurityException("No tienes permiso para editar esta reseña");
+        }
+
+        // Actualizamos contenido y calificación
+        reseñaExistente.setContenido(datosNuevos.getContenido());
+        reseñaExistente.setCalificacion(datosNuevos.getCalificacion());
+        
+        //Actualizar la fecha a hoy
+        reseñaExistente.setFechaCreacion(java.time.LocalDate.now());
+        return reseñaRepository.save(reseñaExistente);
+    }
+
+
 }

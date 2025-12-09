@@ -19,7 +19,6 @@ public class ReseñaControlador {
     @Autowired
     private ReseñaService reseñaService;
 
-
     //Obtener reseñas de un ÁLBUM 
     @GetMapping("/album/{id}")
     public ResponseEntity<List<ReseñaDTO>> getReseñasPorAlbum(
@@ -65,5 +64,28 @@ public class ReseñaControlador {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> editarReseña(
+            @PathVariable("id") UUID reseñaId,
+            @RequestParam UUID usuarioId,
+            @RequestBody Reseña reseñaDatosNuevos) {
+        
+        try {
+            Reseña reseñaEditada = reseñaService.editar(reseñaId, reseñaDatosNuevos, usuarioId);
+            return ResponseEntity.ok(reseñaEditada);
+            
+        } catch (IllegalArgumentException e) {
+            // Si la reseña no existe
+            return ResponseEntity.notFound().build();
+            
+        } catch (SecurityException e) {
+            // Si el usuario no es el dueño
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No eres el autor de esta reseña");
+            
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }
