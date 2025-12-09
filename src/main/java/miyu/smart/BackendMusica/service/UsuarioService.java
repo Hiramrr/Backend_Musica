@@ -40,14 +40,16 @@ public class UsuarioService {
         usuarioRepository.deleteById(id);
     }
 
-    public Usuario actualizarUsuario(Usuario usuario){
-        if (usuario.getId() != null && usuarioRepository.existsById(usuario.getId())){
-            if (usuario.getPassword() != null) {
-                usuario.setPassword(codificadorContraseña.encode(usuario.getPassword()));
-            }
-            return usuarioRepository.save(usuario);
-        }
-        return null;
+    public Usuario actualizarDatosPerfil(UUID id, Usuario datosNuevos) {
+        Usuario usuarioExistente = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        usuarioExistente.setNombre(datosNuevos.getNombre());
+        usuarioExistente.setCorreo(datosNuevos.getCorreo());
+
+        usuarioExistente.setFotoUrl(datosNuevos.getFotoUrl());
+
+        return usuarioRepository.save(usuarioExistente);
     }
 
     public Usuario autenticar(String correo, String password) {
