@@ -29,10 +29,22 @@ public interface AlbumRepository extends JpaRepository<Album, UUID> {
             LEFT JOIN artista ar ON rel.id_artista = ar.id
             GROUP BY a.id, a.nombre, a.fecha_salida, a.descripcion, a.portada_url
     """, nativeQuery = true)
-    List<AlbumResumen> obtenerResumenesNativos(); // Usamos un join para extraer solo los datos que necesita el front
+    @Query(value = """ 
+        SELECT 
+            a.id AS id,
+            a.nombre AS nombre, 
+            a.fecha_salida AS fechaSalida, 
+            a.descripcion AS descripcion, 
+            a.portada_url AS portadaUrl,
+            STRING_AGG(ar.nombre, ', ') AS nombreArtista 
+        FROM album a
+        LEFT JOIN album_artistas rel ON a.id = rel.id_album
+        LEFT JOIN artista ar ON rel.id_artista = ar.id
+        GROUP BY a.id, a.nombre, a.fecha_salida, a.descripcion, a.portada_url
+        """, nativeQuery = true)
+    List<AlbumResumen> obtenerResumenesNativos(); 
 
-
-    @Query("SELECT a FROM Album a " + //consulta para traer el artista del album
+    @Query("SELECT a FROM Album a " + 
             "LEFT JOIN FETCH a.artistas " + 
             "WHERE a.id = :id")
     Optional<Album> buscarPorIdConDetalles(@Param("id") UUID id);

@@ -2,7 +2,6 @@ package miyu.smart.BackendMusica.controller;
 import miyu.smart.BackendMusica.dto.AlbumDetalleDTO;
 import miyu.smart.BackendMusica.dto.AlbumResumen;
 import miyu.smart.BackendMusica.entity.Album;
-import miyu.smart.BackendMusica.entity.Cancion;
 import miyu.smart.BackendMusica.service.AlbumService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,11 +20,23 @@ public class AlbumControlador {
     @Autowired
     private AlbumService albumService;
 
+    // Obtener todos
     @GetMapping
-    public ResponseEntity<List<AlbumResumen>> getAllAlbums(){
-        return ResponseEntity.ok(albumService.obtenerTodosPersonalizados()); // Usamos el método que devuelve una respuesta con solo datos necesarios
+    public ResponseEntity<List<Album>> getAll(){
+        return ResponseEntity.ok(albumService.obtenerTodos());
+    }
+
+    // Obtener uno por ID
+    @GetMapping("/{id}")
+    public ResponseEntity<Album> getAlbumById(@PathVariable UUID id) {
+        Album album = albumService.obtenerAlbum(id);
+        if (album == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(album);
     }
     
+    // Crear nuevo
     @PostMapping
     public ResponseEntity<Album> saveAlbum(@RequestBody Album album){
         try{
@@ -36,8 +47,9 @@ public class AlbumControlador {
         }
     }
 
+    // Eliminar (Corregido el nombre del método a deleteAlbum)
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAlbum(@PathVariable UUID id){
+    public ResponseEntity<Void> deleteAlbum(@PathVariable UUID id){ 
         Album albumExistente = albumService.obtenerAlbum(id);
         if(albumExistente != null){
             albumService.eliminar(albumExistente.getId());
@@ -46,21 +58,30 @@ public class AlbumControlador {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
+    // Actualizar (Corregido con @RequestBody y lógica de actualización)
     @PutMapping("/{id}")
-    public ResponseEntity<Album> updateAlbum(@PathVariable UUID id, Album album){
+    public ResponseEntity<Album> updateAlbum(@PathVariable UUID id, @RequestBody Album album){
+        // 1. Verificamos si existe el álbum original
         Album albumExistente = albumService.obtenerAlbum(id);
 
         if(albumExistente == null){
             return ResponseEntity.notFound().build();
         }
+        
         try {
-            Album albumActualizado = albumService.actualizarAlbum(albumExistente);
-            return ResponseEntity.ok(albumExistente);
+            // 2. Aseguramos que el objeto nuevo tenga el ID correcto de la URL
+            album.setId(id);
+            
+            // 3. Enviamos a guardar el objeto NUEVO ('album'), no el viejo
+            Album albumActualizado = albumService.actualizarAlbum(album);
+            
+            return ResponseEntity.ok(albumActualizado);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
+    // Obtener por Artista
     @GetMapping("/artista/{id}")
     public ResponseEntity<Optional<Album>> getAlbumsByArtista(@PathVariable UUID id) {
         Optional<Album> albums = albumService.obtenerAlbumPorArtista(id);
@@ -71,6 +92,7 @@ public class AlbumControlador {
 
         return ResponseEntity.ok(albums);
     }
+<<<<<<< Updated upstream
 
     @GetMapping("/{id}") //Este enpoint devuelve los detalles del album con el ID que coincida con la lista de sus canciones
     public ResponseEntity<AlbumDetalleDTO> getAlbumDetalle(@PathVariable UUID id) {
@@ -83,3 +105,6 @@ public class AlbumControlador {
         return ResponseEntity.ok(album);
     }
 }
+=======
+}
+>>>>>>> Stashed changes
