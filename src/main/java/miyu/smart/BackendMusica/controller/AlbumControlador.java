@@ -1,6 +1,6 @@
 package miyu.smart.BackendMusica.controller;
+
 import miyu.smart.BackendMusica.dto.AlbumDetalleDTO;
-import miyu.smart.BackendMusica.dto.AlbumResumen;
 import miyu.smart.BackendMusica.entity.Album;
 import miyu.smart.BackendMusica.service.AlbumService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +26,15 @@ public class AlbumControlador {
         return ResponseEntity.ok(albumService.obtenerTodos());
     }
 
-    // Obtener uno por ID
+    // Obtener detalle por ID
     @GetMapping("/{id}")
-    public ResponseEntity<Album> getAlbumById(@PathVariable UUID id) {
-        Album album = albumService.obtenerAlbum(id);
+    public ResponseEntity<AlbumDetalleDTO> getAlbumDetalle(@PathVariable UUID id) {
+        AlbumDetalleDTO album = albumService.obtenerDetalleAlbum(id);
+
         if (album == null) {
             return ResponseEntity.notFound().build();
         }
+
         return ResponseEntity.ok(album);
     }
     
@@ -47,7 +49,7 @@ public class AlbumControlador {
         }
     }
 
-    // Eliminar (Corregido el nombre del método a deleteAlbum)
+    // Eliminar
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAlbum(@PathVariable UUID id){ 
         Album albumExistente = albumService.obtenerAlbum(id);
@@ -58,10 +60,9 @@ public class AlbumControlador {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    // Actualizar (Corregido con @RequestBody y lógica de actualización)
+    // Actualizar
     @PutMapping("/{id}")
     public ResponseEntity<Album> updateAlbum(@PathVariable UUID id, @RequestBody Album album){
-        // 1. Verificamos si existe el álbum original
         Album albumExistente = albumService.obtenerAlbum(id);
 
         if(albumExistente == null){
@@ -69,12 +70,8 @@ public class AlbumControlador {
         }
         
         try {
-            // 2. Aseguramos que el objeto nuevo tenga el ID correcto de la URL
             album.setId(id);
-            
-            // 3. Enviamos a guardar el objeto NUEVO ('album'), no el viejo
             Album albumActualizado = albumService.actualizarAlbum(album);
-            
             return ResponseEntity.ok(albumActualizado);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -89,18 +86,6 @@ public class AlbumControlador {
         if (albums.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
-
         return ResponseEntity.ok(albums);
-    }
-
-    @GetMapping("/{id}") //Este enpoint devuelve los detalles del album con el ID que coincida con la lista de sus canciones
-    public ResponseEntity<AlbumDetalleDTO> getAlbumDetalle(@PathVariable UUID id) {
-        AlbumDetalleDTO album = albumService.obtenerDetalleAlbum(id);
-
-        if (album == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(album);
     }
 }
