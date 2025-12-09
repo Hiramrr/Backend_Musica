@@ -25,6 +25,15 @@ public class CancionControlador {
             return ResponseEntity.ok(cancionService.obtenerTodosPersonalizados());
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Cancion> getCancionById(@PathVariable UUID id) {
+        Cancion cancion = cancionService.obtenerCancion(id);
+        if (cancion != null) {
+            return ResponseEntity.ok(cancion);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
     @PostMapping
     public ResponseEntity<Cancion> saveCancion(@RequestBody Cancion cancion){
         try {
