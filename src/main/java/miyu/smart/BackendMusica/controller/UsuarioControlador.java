@@ -3,13 +3,13 @@ package miyu.smart.BackendMusica.controller;
 import miyu.smart.BackendMusica.entity.Usuario;
 import miyu.smart.BackendMusica.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 
 import java.util.Map;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/usuarios")
@@ -51,6 +51,16 @@ public class UsuarioControlador {
             return ResponseEntity.ok(usuarioActualizado);
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body("Error: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Usuario> obtenerPorID(@PathVariable UUID id){
+        try {
+            Usuario usuarioBuscado = usuarioService.obtenerUsuario(id);
+            return ResponseEntity.ok(usuarioBuscado);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 }
