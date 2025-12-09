@@ -1,4 +1,5 @@
 package miyu.smart.BackendMusica.controller;
+import miyu.smart.BackendMusica.dto.AlbumDetalleDTO;
 import miyu.smart.BackendMusica.dto.AlbumResumen;
 import miyu.smart.BackendMusica.entity.Album;
 import miyu.smart.BackendMusica.entity.Cancion;
@@ -69,5 +70,16 @@ public class AlbumControlador {
         }
 
         return ResponseEntity.ok(albums);
+    }
+
+    @GetMapping("/{id}") //Este enpoint devuelve los detalles del album con el ID que coincida con la lista de sus canciones
+    public ResponseEntity<AlbumDetalleDTO> getAlbumDetalle(@PathVariable UUID id) {
+        AlbumDetalleDTO album = albumService.obtenerDetalleAlbum(id);
+
+        if (album == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(album);
     }
 }

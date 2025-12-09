@@ -1,5 +1,7 @@
 package miyu.smart.BackendMusica.service;
 
+import org.springframework.transaction.annotation.Transactional;
+import miyu.smart.BackendMusica.dto.AlbumDetalleDTO;
 import miyu.smart.BackendMusica.dto.AlbumResumen;
 import miyu.smart.BackendMusica.entity.Album;
 import miyu.smart.BackendMusica.entity.Artista;
@@ -60,4 +62,50 @@ public class AlbumService {
     public List<AlbumResumen> obtenerTodosPersonalizados() {
         return albumRepository.obtenerResumenesNativos();
     }
+
+    @Transactional(readOnly = true) //Indicamos que es una transacción de solo lectura para mantener la conexion con la base de datos
+    public AlbumDetalleDTO obtenerDetalleAlbum(UUID id) {
+        
+        // Aquí trae el Álbum junto con sus Artistas 
+        Optional<Album> albumOpt = albumRepository.buscarPorIdConDetalles(id);
+
+        if (albumOpt.isEmpty()) {
+            return null;
+        }
+
+        Album album = albumOpt.get();
+
+        String nombresArtistas = album.getArtistas().stream()
+                .map(artista -> artista.getNombre())
+                .collect(Collectors.joining(", "));
+ 
+        //como estamos dentro de @Transactional,
+        //podemos hacer una segunda consulta para traer la lista de canciones.
+        List<AlbumDetalleDTO.CancionInfo> cancionesDTO = album.getCanciones().stream()
+                .map(cancion -> new AlbumDetalleDTO.CancionInfo(
+                        cancion.getId(),
+                        cancion.getNombre(),
+                        convertirSegundosAFormato(cancion.getDuracion_segundos())
+                ))
+                .collect(Collectors.toList());
+
+        return new AlbumDetalleDTO(
+                album.getId(),
+                album.getNombre(),
+                nombresArtistas,
+                album.getDescripcion(),
+                album.getFechaSalida(),
+                album.getPortadaUrl(),
+                cancionesDTO
+        );
+    }
+
+    // Método auxiliar para convertir segundos a formato MM:SS y que el front no tenga que hacerlo
+    private String convertirSegundosAFormato(int totalSegundos) {
+        int minutos = totalSegundos / 60;
+        int segundos = totalSegundos % 60;
+        return String.format("%d:%02d", minutos, segundos);
+    }
+
+
 }
