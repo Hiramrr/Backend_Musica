@@ -19,29 +19,24 @@ public class ReseñaControlador {
     @Autowired
     private ReseñaService reseñaService;
 
-    //Obtener reseñas de un ÁLBUM 
     @GetMapping("/album/{id}")
     public ResponseEntity<List<ReseñaDTO>> getReseñasPorAlbum(
             @PathVariable("id") UUID albumId,
-            @RequestParam(required = false) UUID usuarioId) { //para usuarios no logeados puede ser null
+            @RequestParam(required = false) UUID usuarioId) { 
         
-        List<ReseñaDTO> reseñas = reseñaService.obtenerReseñasDeAlbum(albumId, usuarioId); //agrega la bandera esMia para saber si la reseña pertenece al usuario logueado
+        List<ReseñaDTO> reseñas = reseñaService.obtenerReseñasDeAlbum(albumId, usuarioId); 
 
         return ResponseEntity.ok(reseñas);
     }
 
-    //btener reseñas de una CANCIÓN 
     @GetMapping("/cancion/{id}")
     public ResponseEntity<List<ReseñaDTO>> getReseñasPorCancion(
             @PathVariable("id") UUID cancionId,
-            @RequestParam(required = false) UUID usuarioId) {//para usuarios no logeados puede ser null
-        
-        List<ReseñaDTO> reseñas = reseñaService.obtenerReseñasDeCancion(cancionId, usuarioId);//agrega la bandera esMia para saber si la reseña pertenece al usuario logueado
-
+            @RequestParam(required = false) UUID usuarioId) {
+        List<ReseñaDTO> reseñas = reseñaService.obtenerReseñasDeCancion(cancionId, usuarioId);
         return ResponseEntity.ok(reseñas);
     }
 
-    //Obtener TODAS las reseñas sin filtro
     @GetMapping
     public ResponseEntity<List<Reseña>> obtenerTodas() {
         return ResponseEntity.ok(reseñaService.obtenerTodas());
@@ -77,11 +72,9 @@ public class ReseñaControlador {
             return ResponseEntity.ok(reseñaEditada);
             
         } catch (IllegalArgumentException e) {
-            // Si la reseña no existe
             return ResponseEntity.notFound().build();
             
         } catch (SecurityException e) {
-            // Si el usuario no es el dueño
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No eres el autor de esta reseña");
             
         } catch (Exception e) {
