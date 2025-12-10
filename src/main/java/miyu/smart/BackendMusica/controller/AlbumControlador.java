@@ -62,7 +62,6 @@ public class AlbumControlador {
         albumService.eliminar(id);
         return ResponseEntity.noContent().build();
     } catch (Exception e) {
-        // Esto imprimirá el error REAL en los logs de Railway
         e.printStackTrace(); 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                              .body("Error real: " + e.getMessage());
@@ -89,7 +88,6 @@ public class AlbumControlador {
 
     @GetMapping("/artista/{id}")
     public ResponseEntity<List<Album>> getAlbumsByArtista(@PathVariable UUID id) {
-            // Nota: Asegúrate de que tu servicio ahora devuelva List<Album>
         List<Album> albums = albumService.obtenerPorArtista(id);
 
         if (albums.isEmpty()) {

@@ -74,7 +74,6 @@ public class AlbumService {
         if(albumExistenteOpt.isPresent()){ 
             Album albumExistente = albumExistenteOpt.get();
 
-            //Actualizamos SOLO los datos informativos sin afectar la lista de canciones
             albumExistente.setNombre(albumDatosNuevos.getNombre());
             albumExistente.setFechaSalida(albumDatosNuevos.getFechaSalida());
             albumExistente.setDescripcion(albumDatosNuevos.getDescripcion());
@@ -82,12 +81,10 @@ public class AlbumService {
             albumExistente.setTotalCanciones(albumDatosNuevos.getTotalCanciones());          
             albumExistente.setDuracion_segundos(albumDatosNuevos.getDuracion_segundos());
 
-            //Si el artista cambio tambien se actualiza 
             if (albumDatosNuevos.getArtistas() != null && !albumDatosNuevos.getArtistas().isEmpty()) {
                 albumExistente.setArtistas(albumDatosNuevos.getArtistas());
             }
 
-            //Guardamos el objeto existente actualizado y como nunca tocamos las canciones, estas permanecen intactas
             return albumRepository.save(albumExistente);
         }
         
@@ -98,7 +95,7 @@ public class AlbumService {
         return albumRepository.obtenerResumenesNativos();
     }
 
-    @Transactional(readOnly = true) //Indicamos que es una transacción de solo lectura para mantener la conexion con la base de datos
+    @Transactional(readOnly = true) 
     public AlbumDetalleDTO obtenerDetalleAlbum(UUID id) {
         
         // Aquí trae el Álbum junto con sus Artistas 
@@ -114,8 +111,8 @@ public class AlbumService {
                 .map(artista -> artista.getNombre())
                 .collect(Collectors.joining(", "));
  
-        //como estamos dentro de @Transactional,
-        //podemos hacer una segunda consulta para traer la lista de canciones.
+        /*como estamos dentro de @Transactional,
+        podemos hacer una segunda consulta para traer la lista de canciones.*/
         List<AlbumDetalleDTO.CancionInfo> cancionesDTO = album.getCanciones().stream()
                 .map(cancion -> new AlbumDetalleDTO.CancionInfo(
                         cancion.getId(),
@@ -135,7 +132,6 @@ public class AlbumService {
         );
     }
 
-    // Método auxiliar para convertir segundos a formato MM:SS y que el front no tenga que hacerlo
     private String convertirSegundosAFormato(int totalSegundos) {
         int minutos = totalSegundos / 60;
         int segundos = totalSegundos % 60;

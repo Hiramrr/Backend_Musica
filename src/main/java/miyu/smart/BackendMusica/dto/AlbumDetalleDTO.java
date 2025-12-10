@@ -35,7 +35,7 @@ public class AlbumDetalleDTO {
     public static class CancionInfo {
         private UUID id;
         private String nombre;
-        private String duracion; //guardar el tiempo de cada cancion en MM:SS
+        private String duracion;
 
         public CancionInfo(UUID id, String nombre, String duracion) {
             this.id = id;
