@@ -32,7 +32,11 @@ public class Seguridad {
         CorsConfiguration configuration = new CorsConfiguration();
         
         // Permitimos el puerto de Vite (Vue) y también tu dominio de producción por si acaso
-        configuration.setAllowedOrigins(List.of("http://localhost:5173", "https://backendmusica-production.up.railway.app"));
+        configuration.setAllowedOrigins(List.of(
+            "http://localhost:5173",
+            "https://backendmusica-production.up.railway.app",
+            "https://smartrating.vercel.app"
+        ));
         
         // Permitimos todos los métodos HTTP (GET, POST, PUT, DELETE, etc)
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));

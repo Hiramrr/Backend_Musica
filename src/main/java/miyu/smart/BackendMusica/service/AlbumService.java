@@ -56,10 +56,34 @@ public class AlbumService {
         return albumRepository.findByArtistas_Id(artistaId);
     }
 
-    public Album actualizarAlbum(Album album){
-        if(album.getId() != null && albumRepository.existsById(album.getId())){
-            return albumRepository.save(album);
+    public Album actualizarAlbum(Album albumDatosNuevos){
+        if(albumDatosNuevos.getId() == null) {
+            return null;
         }
+
+        //Buscamos el álbum original en la BD 
+        Optional<Album> albumExistenteOpt = albumRepository.findById(albumDatosNuevos.getId());
+
+        if(albumExistenteOpt.isPresent()){ 
+            Album albumExistente = albumExistenteOpt.get();
+
+            //Actualizamos SOLO los datos informativos sin afectar la lista de canciones
+            albumExistente.setNombre(albumDatosNuevos.getNombre());
+            albumExistente.setFechaSalida(albumDatosNuevos.getFechaSalida());
+            albumExistente.setDescripcion(albumDatosNuevos.getDescripcion());
+            albumExistente.setPortadaUrl(albumDatosNuevos.getPortadaUrl());
+            albumExistente.setTotalCanciones(albumDatosNuevos.getTotalCanciones());          
+            albumExistente.setDuracion_segundos(albumDatosNuevos.getDuracion_segundos());
+
+            //Si el artista cambio tambien se actualiza 
+            if (albumDatosNuevos.getArtistas() != null && !albumDatosNuevos.getArtistas().isEmpty()) {
+                albumExistente.setArtistas(albumDatosNuevos.getArtistas());
+            }
+
+            //Guardamos el objeto existente actualizado y como nunca tocamos las canciones, estas permanecen intactas
+            return albumRepository.save(albumExistente);
+        }
+        
         return null;
     }
 
