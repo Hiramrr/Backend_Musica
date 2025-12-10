@@ -1,5 +1,7 @@
 package miyu.smart.BackendMusica.dto;
 
+import miyu.smart.BackendMusica.entity.Album;
+
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -10,6 +12,10 @@ public class ReseñaDTO {
     private LocalDate fechaCreacion;
     private boolean esMia; //bandera para saber desde el front si la reseña pertenece al usuario logueado
     private AutorDTO autor; //datos de quien la escribió
+
+    //se agrego esto para saber en los perfiles si la reseña es de una cancion o de un album
+    private AlbumDTO album;
+    private CancionDTO cancion;
 
     public ReseñaDTO(UUID id, String contenido, Double calificacion, LocalDate fechaCreacion, boolean esMia, AutorDTO autor) {
         this.id = id;
@@ -26,6 +32,13 @@ public class ReseñaDTO {
     public LocalDate getFechaCreacion() { return fechaCreacion; }
     public boolean isEsMia() { return esMia; }
     public AutorDTO getAutor() { return autor; }
+
+    public AlbumDTO getAlbum() { return album; }
+    public void setAlbum(AlbumDTO album) { this.album = album; }
+
+    public CancionDTO getCancion() { return cancion; }
+    public void setCancion(CancionDTO cancion) { this.cancion = cancion; }
+
 
     //clase para manejar los datos del Usuario 
     public static class AutorDTO {
