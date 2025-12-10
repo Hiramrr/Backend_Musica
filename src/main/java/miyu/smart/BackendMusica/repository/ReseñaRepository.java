@@ -13,4 +13,7 @@ public interface ReseñaRepository extends JpaRepository<Reseña, UUID> {
     List<Reseña> findByCancion_Id(UUID cancionId);
     // Spring entiende: "Busca por la propiedad 'album', y dentro de ella por 'id'"
     List<Reseña> findByAlbum_Id(UUID albumId);
+
+    // Sprin entiende: "busca las reseñas de este usuario y ordenalas por fecha de creacion"
+    List<Reseña> findByUsuario_IdOrderByFechaCreacionDesc(UUID usuarioId);
 }

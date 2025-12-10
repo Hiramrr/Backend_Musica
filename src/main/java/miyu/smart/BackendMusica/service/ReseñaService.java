@@ -1,6 +1,9 @@
 package miyu.smart.BackendMusica.service;
 
+import miyu.smart.BackendMusica.dto.AlbumDTO;
+import miyu.smart.BackendMusica.dto.CancionDTO;
 import miyu.smart.BackendMusica.dto.ReseñaDTO;
+import miyu.smart.BackendMusica.entity.Artista;
 import miyu.smart.BackendMusica.entity.Reseña;
 import miyu.smart.BackendMusica.entity.Usuario;
 import miyu.smart.BackendMusica.repository.ReseñaRepository;
@@ -56,9 +59,9 @@ public class ReseñaService {
     //@Transactional le dice a los metodos que no cierre la conexion de la base de datos hasta que termine todo el metodo
     //de lo contrario por defalt cierra la conexion al terminar la primera consulta
     //lo dejamos en solo lectura porque no vamos a modificar nada en la base de datos
-    public List<ReseñaDTO> obtenerReseñasDeAlbum(UUID albumId, UUID usuarioVisitanteId) { 
+    public List<ReseñaDTO> obtenerReseñasDeAlbum(UUID albumId, UUID usuarioVisitanteId) {
         // Nota el guion bajo aquí también
-        List<Reseña> reseñas = reseñaRepository.findByAlbum_Id(albumId); 
+        List<Reseña> reseñas = reseñaRepository.findByAlbum_Id(albumId);
         return convertirLista(reseñas, usuarioVisitanteId);
     }
 
@@ -68,12 +71,20 @@ public class ReseñaService {
         List<Reseña> reseñas = reseñaRepository.findByCancion_Id(cancionId);
         return convertirLista(reseñas, usuarioVisitanteId);
     }
+
+    @Transactional(readOnly = true)
+    public List<ReseñaDTO> obtenerReseñasDeUsuario(UUID usuarioPerfilId) {
+        // Obtenemos las reseñas creadas por el usuario, ordenadas por fecha
+        List<Reseña> reseñas = reseñaRepository.findByUsuario_IdOrderByFechaCreacionDesc(usuarioPerfilId);
+        return convertirLista(reseñas, usuarioPerfilId);
+    }
+
     // Recibe cualquier lista de reseñas y el id del usuario para agregar una bandera si la reseña es suya
     private List<ReseñaDTO> convertirLista(List<Reseña> reseñas, UUID usuarioVisitanteId) {
         return reseñas.stream()
                 .map(reseña -> {
                     Usuario autor = reseña.getUsuario();
-                    
+
                     // Verificamos si el visitante es el dueño de la reseña
                     boolean esMia = usuarioVisitanteId != null && usuarioVisitanteId.equals(autor.getId());
 
@@ -83,7 +94,7 @@ public class ReseñaService {
                             autor.getFotoUrl()
                     );
 
-                    return new ReseñaDTO(
+                    ReseñaDTO dto = new ReseñaDTO(
                             reseña.getId(),
                             reseña.getContenido(),
                             reseña.getCalificacion(),
@@ -91,8 +102,43 @@ public class ReseñaService {
                             esMia,
                             autorDTO
                     );
+
+                    // Llenar datos ya sea album o cancion para el perfil
+                    if (reseña.getAlbum() != null) {
+                        String nombresArtistas = obtenerNombresArtistas(reseña.getAlbum().getArtistas());
+
+                        AlbumDTO albumInfo = new AlbumDTO(
+                                reseña.getAlbum().getId(),
+                                reseña.getAlbum().getNombre(),
+                                reseña.getAlbum().getPortadaUrl(),
+                                nombresArtistas
+                        );
+                        dto.setAlbum(albumInfo);
+
+                    } else if (reseña.getCancion() != null) {
+                        String nombresArtistas = obtenerNombresArtistas(reseña.getCancion().getArtistas());
+
+                        CancionDTO cancionInfo = new CancionDTO(
+                                reseña.getCancion().getId(),
+                                reseña.getCancion().getNombre(),
+                                reseña.getCancion().getPortada_url(),
+                                nombresArtistas
+                        );
+                        dto.setCancion(cancionInfo);
+                    }
+
+                    return dto;
                 })
                 .collect(Collectors.toList());
+    }
+
+    private String obtenerNombresArtistas(List<Artista> artistas) {
+        if (artistas == null || artistas.isEmpty()) {
+            return "Desconocido";
+        }
+        return artistas.stream()
+                .map(Artista::getNombre)
+                .collect(Collectors.joining(", "));
     }
 
     public Reseña editar(UUID reseñaId, Reseña datosNuevos, UUID usuarioId) {
@@ -111,11 +157,9 @@ public class ReseñaService {
         // Actualizamos contenido y calificación
         reseñaExistente.setContenido(datosNuevos.getContenido());
         reseñaExistente.setCalificacion(datosNuevos.getCalificacion());
-        
+
         //Actualizar la fecha a hoy
         reseñaExistente.setFechaCreacion(java.time.LocalDate.now());
         return reseñaRepository.save(reseñaExistente);
     }
-
-
 }
