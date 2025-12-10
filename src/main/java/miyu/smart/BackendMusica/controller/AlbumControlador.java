@@ -59,15 +59,14 @@ public class AlbumControlador {
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();*/
         try {
-            albumService.eliminar(id);
-            return ResponseEntity.ok().build();
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error al eliminar el album: " + e.getMessage());
-        }
+        albumService.eliminar(id);
+        return ResponseEntity.noContent().build();
+    } catch (Exception e) {
+        // Esto imprimirá el error REAL en los logs de Railway
+        e.printStackTrace(); 
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                             .body("Error real: " + e.getMessage());
+    }
     }
 
     // Actualizar
