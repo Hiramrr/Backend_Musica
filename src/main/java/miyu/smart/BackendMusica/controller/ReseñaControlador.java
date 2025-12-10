@@ -82,5 +82,9 @@ public class ReseñaControlador {
         }
     }
 
-    
+    @GetMapping("/usuario/{id}")
+    public ResponseEntity<List<ReseñaDTO>> getReseñasPorUsuario(@PathVariable("id") UUID usuarioId) {
+        List<ReseñaDTO> reseñas = reseñaService.obtenerReseñasDeUsuario(usuarioId);
+        return ResponseEntity.ok(reseñas);
+    }
 }
