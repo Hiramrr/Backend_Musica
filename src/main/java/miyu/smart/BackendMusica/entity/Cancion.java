@@ -46,6 +46,9 @@ public class Cancion {
     //Usamos JsonIgnoreProperties para que no traiga la lista de canciones del álbum evita bucle infinito album tiene canciones y cada cancion tiene album
     private Album album;
 
+    @OneToMany(mappedBy = "cancion", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reseña> reseñas = new ArrayList<>();
+
     public Cancion(UUID id, String nombre, int duracion_segundos, double calificacion, String descripcion, List<Artista> artistas, int fecha_salida, String portada_url, Album album) {
         this.id = id;
         this.nombre = nombre;

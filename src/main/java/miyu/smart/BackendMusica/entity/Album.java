@@ -42,6 +42,9 @@ public class Album {
     @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Cancion> canciones = new ArrayList<>();
 
+    @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reseña> reseñas = new ArrayList<>();
+
     public Album(UUID id, String nombre, int duracion_segundos, String descripcion, Double calificacion, int totalCanciones, String portadaUrl, int fechaSalida, List<Artista> artistas, List<Cancion> canciones) {
         this.id = id;
         this.nombre = nombre;
