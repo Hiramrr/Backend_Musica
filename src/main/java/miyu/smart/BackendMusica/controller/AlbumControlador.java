@@ -51,13 +51,23 @@ public class AlbumControlador {
 
     // Eliminar
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAlbum(@PathVariable UUID id){ 
-        Album albumExistente = albumService.obtenerAlbum(id);
+    public ResponseEntity<?> deleteAlbum(@PathVariable UUID id){ 
+        /*Album albumExistente = albumService.obtenerAlbum(id);
         if(albumExistente != null){
             albumService.eliminar(albumExistente.getId());
             return ResponseEntity.ok().build();
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();*/
+        try {
+            albumService.eliminar(id);
+            return ResponseEntity.ok().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al eliminar el album: " + e.getMessage());
+        }
     }
 
     // Actualizar

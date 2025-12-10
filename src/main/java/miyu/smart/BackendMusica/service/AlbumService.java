@@ -40,8 +40,15 @@ public class AlbumService {
         return contenedor.orElse(null);
     }
 
+    @Transactional
     public void eliminar(UUID id) {
-        albumRepository.deleteById(id);
+        Album album = albumRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Album no encontrado con id: " + id));
+                album.getArtistas().clear();
+                album.getCanciones().clear();
+                albumRepository.delete(album);
+
+                //albumRepository.deleteById(id);
     }
 
     public List<Artista> obtenerArtistasDeAlbum(UUID id) {
