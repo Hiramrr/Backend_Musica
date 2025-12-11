@@ -31,7 +31,7 @@ public class ArtistaControlador {
     public ResponseEntity<Artista> saveArtista(@RequestBody Artista artista){
         try{
             Artista nuevoArtista = artistaService.subirArtista(artista);
-            return ResponseEntity.created(new URI("/api/artista/" + nuevoArtista.getId())).body(nuevoArtista);
+            return ResponseEntity.created(new URI("/api/artistas/" + nuevoArtista.getId())).body(nuevoArtista);
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
