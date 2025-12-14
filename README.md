@@ -29,3 +29,76 @@ Tal vez tengan que crear la carpeta datos antes de ejecutarlo.
 Estos comandos solo se ejecutan una vez, de ahi lo único que harán es usar **docker run MusicaBD** o **docker run MusicaSpring**
 
 No muevan los puertos de los comandos tampoco, si no funciona cierren lo que este usando ese puerto.
+
+## Pruebas de Endpoints (Ejemplos con curl)
+
+A continuación se muestran ejemplos para probar los endpoints principales de la API utilizando `curl`. Asegúrate de que el servidor esté corriendo en `localhost:8080`.
+
+### 1. Registrar Usuario
+Crea un nuevo usuario en la base de datos.
+
+```bash
+curl -v -X POST http://localhost:8080/api/usuarios/registro \
+-H 'Content-Type: application/json' \
+-d '{
+    "nombre": "Hiram Test",
+    "correo": "hiram@test.com",
+    "password": "123",
+    "fotoUrl": "[https://ibb.co/0jF6YrwV](https://ibb.co/0jF6YrwV)"
+}'
+```
+
+### 2. Crear Canción
+Agrega una nueva canción a la base de datos.
+
+```bash
+curl -v -X POST http://localhost:8080/api/canciones \
+-H 'Content-Type: application/json' \
+-d '{
+    "nombre": "Canción de Prueba",
+    "duracion_segundos": 210,
+    "calificacion": 0.0,
+    "descripcion": "Esta es una canción para probar el backend",
+    "fecha_salida": 2024,
+    "portada_url": "[https://ibb.co/Y7zJyD1p](https://ibb.co/Y7zJyD1p)"
+}'
+```
+
+### 3. Crear Reseña
+Crea una reseña vinculando un usuario y una canción (o álbum) existentes.
+
+```bash
+curl -v -X POST http://localhost:8080/api/resenas \
+-H 'Content-Type: application/json' \
+-d '{
+    "contenido": "El backend funciona de maravilla",
+    "calificacion": 5.0,
+    "usuario": { "id": "3a725921-7f8e-4ee2-ac22-99589865af62" },
+    "cancion": { "id": "3d765b8b-30ea-4647-85fb-2f26ffbcd12b" }
+}'
+```
+
+### 4. Obtener Reseñas
+Obtiene la lista de todas las reseñas guardadas.
+
+```bash
+curl -v -X GET http://localhost:8080/api/resenas
+```
+
+Respuesta esperada (JSON):
+```json
+[
+  {
+    "id": "d2b32b1c-81ca-4200-8281-419ce0d58137",
+    "contenido": "El backend funciona de maravilla",
+    "calificacion": 5.0,
+    "fechaCreacion": "2025-12-08",
+    "usuario": {
+      "id": "3a725921-7f8e-4ee2-ac22-99589865af62",
+      "nombre": "Hiram Test",
+      "correo": "hiram@test.com",
+      "fotoUrl": "[https://ibb.co/0jF6YrwV](https://ibb.co/0jF6YrwV)"
+    }
+  }
+]
+```

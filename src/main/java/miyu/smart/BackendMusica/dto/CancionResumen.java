@@ -5,7 +5,6 @@ import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public interface CancionResumen {
-    // Datos directos de la tabla cancion
     UUID getId();
     String getNombre();
     String getDescripcion();
@@ -17,7 +16,6 @@ public interface CancionResumen {
     @JsonProperty("portada_url")
     String getPortadaUrl();
 
-    // Datos traídos de otras tablas con JOIN
     @JsonProperty("nombre_album")
     String getNombreAlbum();
     
