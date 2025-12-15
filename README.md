@@ -129,3 +129,55 @@ curl -X POST http://localhost:8080/api/artistas \
 ```bash
 curl -X GET http://localhost:8080/api/artistas
 ```
+
+### CRUD de Álbumes
+
+### 7. Agregar Álbum (POST)
+Crea un nuevo álbum y lo vincula con un artista existente. **Nota:** Es importante enviar el arreglo de `artistas` con al menos un objeto que contenga el `id` de un artista ya registrado.
+
+```bash
+curl -X POST http://localhost:8080/api/albums \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nombre": "Romance",
+    "duracion_segundos": 2700,
+    "descripcion": "Un álbum de boleros producido por Armando Manzanero.",
+    "fechaSalida": 1991,
+    "totalCanciones": 12,
+    "portadaUrl": "[https://i.ibb.co/album-romance.jpg](https://i.ibb.co/album-romance.jpg)",
+    "artistas": [
+      { "id": "e8f4899f-45cf-4a08-98b7-486c00373dfe" }
+    ]
+  }'
+```
+
+Respuesta esperada (JSON):
+```json
+[
+  {
+    "id": "c9f12345-1234-1234-1234-123456789abc",
+    "nombre": "Romance",
+    "duracion_segundos": 2700,
+    "descripcion": "Un álbum de boleros producido por Armando Manzanero.",
+    "calificacion": null,
+    "totalCanciones": 12,
+    "fechaSalida": 1991,
+    "portadaUrl": "[https://i.ibb.co/album-romance.jpg](https://i.ibb.co/album-romance.jpg)",
+    "artistas": [
+      {
+        "id": "pega-aqui-el-uuid-del-artista",
+        "nombre": "Luis Miguel",
+        "fecha_inicio": 1982
+      }
+    ],
+    "canciones": []
+  }
+]
+```
+
+### 8. Consultar todos los Álbumes (GET)
+Obtiene la lista de todos los álbumes registrados en la base de datos.
+
+```bash
+curl -v -X GET http://localhost:8080/api/albums
+```
