@@ -34,6 +34,8 @@ No muevan los puertos de los comandos tampoco, si no funciona cierren lo que est
 
 A continuación se muestran ejemplos para probar los endpoints principales de la API utilizando `curl`. Asegúrate de que el servidor esté corriendo en `localhost:8080`.
 
+### CRUD de Usuarios
+
 ### 1. Registrar Usuario
 Crea un nuevo usuario en la base de datos.
 
@@ -47,6 +49,7 @@ curl -v -X POST http://localhost:8080/api/usuarios/registro \
     "fotoUrl": "[https://ibb.co/0jF6YrwV](https://ibb.co/0jF6YrwV)"
 }'
 ```
+### CRUD de Canciones
 
 ### 2. Crear Canción
 Agrega una nueva canción a la base de datos.
@@ -63,6 +66,7 @@ curl -v -X POST http://localhost:8080/api/canciones \
     "portada_url": "[https://ibb.co/Y7zJyD1p](https://ibb.co/Y7zJyD1p)"
 }'
 ```
+### CRUD de Reseñas
 
 ### 3. Crear Reseña
 Crea una reseña vinculando un usuario y una canción (o álbum) existentes.
