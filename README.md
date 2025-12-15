@@ -102,3 +102,26 @@ Respuesta esperada (JSON):
   }
 ]
 ```
+
+### CRUD de Artista
+
+### 5. Agregar Artista (POST)
+
+```bash
+curl -X POST http://localhost:8080/api/artistas \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nombre": "Marco Antonio Solis",
+    "fecha_inicio": 1970,
+    "fecha_fin": null,
+    "nacimiento": "1959-12-29",
+    "bibliografia": "Conocido como El Buki, es un músico, cantante, compositor y productor musical mexicano.",
+    "foto_url": "https://i.ibb.co/chNw5p0h/Artista-marco-antonio-solis.jpg"
+  }'
+```
+
+### 6. Consultar todos los Artistas (GET)
+
+```bash
+curl -X GET http://localhost:8080/api/artistas
+```
