@@ -14,7 +14,7 @@ Lo que hace es crear una conexión puente entre los contenedores de docker, para
 docker run -d --name MusicaBD --network musica -e POSTGRES_PASSWORD=musica123 -e POSTGRES_DB=musica -p 5432:5432 -v/Users/hiram/proyectos/BackendMusica/datos:/var/lib/postgresql/data postgres:15
 ```
 
-A este comando solo le tendrán que cambiar su dirección jaja
+**Nota:** Es importante que cambies las rutas de ejemplo por tus rutas reales
 
 ## **Para el contenedor de spring sera así**
 
@@ -22,13 +22,13 @@ A este comando solo le tendrán que cambiar su dirección jaja
 docker run -it --name MusicaSpring --network musica -v /Users/hiram/proyectos/BackendMusica:/app -v /Users/hiram/.m2:/root/.m2 -p 8080:8080 -e DB_URL=jdbc:postgresql://MusicaBD:5432/musica -e DB_USER=postgres -e DB_PASSWORD=musica123 rrojano/spring-boot
 ```
 
-También tendrán que cambiar a sus direcciones,  y ya debería correr perfectamente el proyecto del backend en el puerto 8080
+**Nota:** crear la carpeta datos antes de ejecutarlo 
 
-Tal vez tengan que crear la carpeta datos antes de ejecutarlo.
+También tendrán que cambiar a sus direcciones,  y ya debería correr perfectamente el proyecto del backend en el puerto 8080
 
 Estos comandos solo se ejecutan una vez, de ahi lo único que harán es usar **docker run MusicaBD** o **docker run MusicaSpring**
 
-No muevan los puertos de los comandos tampoco, si no funciona cierren lo que este usando ese puerto.
+Siempre verificar que los puertos no esten siendo utilizados por otros servicios.
 
 ## Pruebas de Endpoints (Ejemplos con curl)
 
@@ -141,12 +141,12 @@ curl -X POST http://localhost:8080/api/albums \
   -d '{
     "nombre": "Romance",
     "duracion_segundos": 2700,
-    "descripcion": "Un álbum de boleros producido por Armando Manzanero.",
+    "descripcion": "Un album de boleros producido por Armando Manzanero.",
     "fechaSalida": 1991,
     "totalCanciones": 12,
     "portadaUrl": "[https://i.ibb.co/album-romance.jpg](https://i.ibb.co/album-romance.jpg)",
     "artistas": [
-      { "id": "e8f4899f-45cf-4a08-98b7-486c00373dfe" }
+      { "id": "da5f253f-75cd-436f-be91-cc0db25a1325" }
     ]
   }'
 ```
