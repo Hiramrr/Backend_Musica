@@ -1,4 +1,4 @@
-# Configuración del entorno -- falta terminarlo bien
+# Configuración del entorno
 
 ## **Red de docker**
 
